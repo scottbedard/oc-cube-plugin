@@ -1,0 +1,11 @@
+<?php
+$minutes = floor($value / 60000);
+
+$seconds = ($value / 1000) % 60;
+if ($seconds < 10) $seconds = '0' . $seconds;
+
+$milliseconds = floor(($value % 1000) / 10);
+if ($milliseconds < 10) $milliseconds = '0' . $milliseconds;
+?>
+
+<?= $minutes > 0 ? $minutes . ':' : '' ?><?= $seconds ?>.<?= $milliseconds ?>

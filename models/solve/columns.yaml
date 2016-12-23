@@ -11,8 +11,14 @@ columns:
         label: Name
         searchable: true
 
+    milliseconds:
+        label: Time
+        type: partial
+        path: $/bedard/cube/models/solve/_time.htm
+
     turn_count:
         label: Turns
 
     created_at:
         label: Date
+        type: date
