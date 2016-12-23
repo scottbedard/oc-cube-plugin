@@ -6,3 +6,13 @@ columns:
     id:
         label: ID
         searchable: true
+
+    name:
+        label: Name
+        searchable: true
+
+    turn_count:
+        label: Turns
+
+    created_at:
+        label: Date

@@ -12,9 +12,10 @@ class Solve extends Model
      * @var string Default attributes.
      */
     public $attributes = [
-        'start' => 0,
         'end' => 0,
-        'moves' => '[]',
+        'scramble' => '[]',
+        'start' => 0,
+        'turns' => '[]',
     ];
 
     /**
@@ -31,18 +32,65 @@ class Solve extends Model
      * @var array Fillable fields
      */
     protected $fillable = [
-        'moves',
-        'start',
         'end',
+        'name',
+        'scramble',
+        'start',
+        'turns',
     ];
 
     /**
      * @var array Jsonable fields
      */
-    protected $jsonable = ['moves'];
+    protected $jsonable = [
+        'scramble',
+        'turns',
+    ];
 
+    /**
+     * Before create.
+     *
+     * @return void
+     */
     public function beforeCreate() {
-        $this->move_count = count($this->moves);
-        $this->solve_milliseconds = $this->end - $this->start;
+        $this->turn_count = $this->getTurnCount();
+        $this->milliseconds = $this->getMilliseconds();
+    }
+
+    /**
+     * Return the solve duration in milliseconds.
+     *
+     * @return int
+     */
+    public function getMilliseconds()
+    {
+        return $this->end - $this->start;
+    }
+
+    /**
+     * Count the number of relevant turns.
+     *
+     * @return int
+     */
+    protected function getTurnCount()
+    {
+        $turns = 0;
+
+        foreach ($this->turns as $turn) {
+            $slice = strtolower(substr($turn['turn'], 0, 1));
+            if (! array_search($slice, ['x', 'y', 'x'])) $turns++;
+        }
+
+        return $turns;
+    }
+
+    /**
+     * Set name attribute.
+     *
+     * @param string    $name
+     */
+    public function setNameAttribute($name)
+    {
+        $this->attributes['name'] = trim($name);
     }
 }
